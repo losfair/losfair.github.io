@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>ds-cppcheck</title>
+    <script src="bundle.js"></script>
+</head>
+
+<body>
+    <div id="loading">Loading</div>
+    <div id="main" style="display:none;box-sizing:border-box">
+        <textarea id="code-input" rows="15" style="width:100%"></textarea>
+        <br />
+        <button id="btn-submit">Check</button>
+        <br />
+        <div><code id="result-box"></code></div>
+    </div>
+    <script>
+        async function on_click() {
+            let text = document.getElementById("code-input").value;
+            let resultBox = document.getElementById("result-box");
+            try {
+                let result = await window.ds_cppcheck.run_cppcheck(text);
+                resultBox.innerText = result;
+            } catch (e) {
+                resultBox.innerText = "Exception: " + e;
+            }
+        }
+        async function run() {
+            await window.ds_cppcheck.init();
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("main").style.display = "block";
+            document.getElementById("btn-submit").addEventListener("click", on_click);
+        }
+        run();
+    </script>
+</body>
+
+</html>
